@@ -15,7 +15,7 @@ class Polynomal:
         self._reg_expr = ''.join([x for x in self._reg_expr if x != ' '])
         # Wzór reg. expression
         lista = re.findall(r'[+\-]*\d*[a-z]*\^*\d*', self._reg_expr)
-        # czyścimy string z niepotrzebnych spacji
+        # czyścimy string z niepotrzebnych spacji (po funkcji re.findall czasami pojawia się spacja lub dwie, niewiadomo czemu)
         lista = [x for x in lista if x != '']
 
         for element in lista:
@@ -53,13 +53,47 @@ class Polynomal:
 
             self.__coeff_power_tuple=tuple(zip(self._coeff_list,self._power_list))
 
+    def integral_rectangle(self,start,stop,step=1):
+        count=int((stop-start)/step)
+        array=[]
+        suma=[]
+        sumaIteracji=0.0;
+        function = [start] * len(self.__coeff_power_tuple)
+        #mapa = map(lambda x : x*2, function)
+        #print(list(mapa))
+        for i in range(0,count):
+            for j in range(0, len(self.__coeff_power_tuple)):
+                array.append(function[j] ** self._power_list[j])
+                #print("Po potęgowaniu: ", array)
+                suma.append(array[j]*self._coeff_list[j])
+                #print("Suma: ",suma)
+            print('Suma iteracji', sum( suma))
+            sumaIteracji+= sum(suma)
+            print("CALKA:",sumaIteracji)
+            array=[]
+            suma=[]
+            start+=step
+            function=[start]*len(self.__coeff_power_tuple)
+
+
+
+        #print(function)
+            #sum+=step*
+        #sum=
+        print(count)
+        print(list(range(0,60)))
+
+        return 0
+
+
 
 #Listy odpowiednio ze współczynnikami i z potęgami
 
 
-obj1=Polynomal('x^3 - 6x^2 + 4x + 12')
+obj1=Polynomal('x+2')
 print(obj1._reg_expr)
 print(obj1.__dict__)
+print(obj1.integral_rectangle(-2, 1,0.01))
 
 
 

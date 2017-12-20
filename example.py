@@ -1,26 +1,69 @@
+
 import re
 
-#print( re.split(r'(s)', 'here are some worrds'))
 
-#example2='Anothesr interesting eXamples'
-#print( re.split(r'[e][s]',example2))
+#Listy odpowiednio ze współczynnikami i z potęgami
+coeffList=[]
+powerList=[]
 
-#print( re.findall(r'\d{2}', 'bielsko 20 st.slodka 23 and 139476235'))
+myregex = 'x^3 - 6x^2 + 4x + 12'
 
-#print(  re.findall(r'\d+', 'bielsko 203 st.slodka 3 and 139476235') )
-myregex='-x^4+3x^3-12x-19'
-lista=re.findall(r'[+-][\d]*[x]*', myregex)
-newlista=[]
+# czyścimy string z niepotrzebnych spacji
+myregex = ''.join([x for x in myregex if x!=' '])
+#Wzór reg. expression
+lista=re.findall(r'[+\-]*\d*[a-z]*\^*\d*', myregex)
+# czyścimy string z niepotrzebnych spacji
+lista= [x for x in lista if x !='']
+
 for element in lista:
-    element=element.replace('x', '')
-    if(len(element)==1):
-        element+='1'
-    newlista.append(element)
-    print(element,len(element))
+    xPosition=element.find('x')
+    powerPosition=element.find('^')
+    #print("Gdzie jest x: ", xPosition)
+    #print(type(element.find('x')))
 
-newlista=map(int,newlista)
-print("Współczynniki", list(newlista))
-#lista.append(lista[-1])
-print('Lista po przeoraniu regexem: ', lista)
-#nowalista=lista[0::2]
-#print("Nowa lista po obróbce: ", nowalista)
+    # w zależności od pozycji x dodajemy elementy do tablic
+    if element.find('x') == 0:
+        coeffList.append(1.0)
+     #   print("Nowa lista : ", coeffList)
+    # -1 oznacza brak znaku
+    elif element.find('x') == -1:
+        coeffList.append(float(element))
+        powerList.append(0.0) # nie ma x, potęga 0
+      #  print("Nowa lista : ", coeffList)
+       # print("PowerList", powerList)
+    elif element.find('x')==1:
+        if element[0]=='+':
+            coeffList.append(1.0)
+        else:
+            coeffList.append(-1.0)
+    #reszta współczynników
+    else:
+            coeffList.append(float(element[0:xPosition:1]))
+           # print("Nowa lista : ", coeffList)
+
+    if element.find('^') ==-1 and element.find('x') != -1:  #jeśli nie ma znaku a mamy potęge
+        powerList.append(float(1))
+       # print("PowerList111", powerList)
+    elif element.find('x')!=-1:
+        powerList.append(float( element[powerPosition+1::1] ) )
+       # print("PowerList", powerList)
+
+print("Ostatecznie:")
+print("Lista współczynników", coeffList)
+print("Potęgi: ", powerList)
+finalList=tuple(zip(coeffList,powerList))
+print(tuple(finalList))
+sum=0.0
+x=5.0
+for value, power in finalList:
+    if power==0:
+        sum+=value
+    else:
+        sum+=float(value)*x**float(power)
+        
+print("Suma",sum)
+
+
+
+
+

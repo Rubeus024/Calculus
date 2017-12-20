@@ -55,6 +55,7 @@ class Polynomal:
 
     def integral_rectangle(self,start,stop,step=1):
         count=int((stop-start)/step)
+        print(count)
         array=[]
         suma=[]
         sumaIteracji=0.0;
@@ -67,9 +68,9 @@ class Polynomal:
                 #print("Po potęgowaniu: ", array)
                 suma.append(array[j]*self._coeff_list[j])
                 #print("Suma: ",suma)
-            print('Suma iteracji', sum( suma))
-            sumaIteracji+= sum(suma)
-            print("CALKA:",sumaIteracji)
+            #print('Suma iteracji', sum( suma)*step)
+            sumaIteracji+= sum(suma)*step
+            #print("CALKA:",sumaIteracji)
             array=[]
             suma=[]
             start+=step
@@ -77,11 +78,9 @@ class Polynomal:
 
 
 
-        #print(function)
-            #sum+=step*
-        #sum=
+
         print(count)
-        print(list(range(0,60)))
+        print(sumaIteracji)
 
         return 0
 
@@ -90,10 +89,10 @@ class Polynomal:
 #Listy odpowiednio ze współczynnikami i z potęgami
 
 
-obj1=Polynomal('x+2')
+obj1=Polynomal(' x^3 - 6x^2 + 4x + 12')
 print(obj1._reg_expr)
 print(obj1.__dict__)
-print(obj1.integral_rectangle(-2, 1,0.01))
+print(obj1.integral_rectangle(-5, 5,0.01))
 
 
 

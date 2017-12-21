@@ -53,7 +53,7 @@ class Polynomal:
                 self._coeff_list.append(float(element[0:x_position:1]))
             # print("Nowa polynomal_parts : ", coeffList)
 
-            if element.find('^') == -1 and element.find(recognized_letter) != -1:  # jeśli nie ma znaku a mamy potęge
+            if element.find('^') == -1 and element.find(recognized_letter) != -1:  # mamy znak, a nie mamy potęgi
                 self._power_list.append(1)
             # print("PowerList111", powerList)
             elif element.find(recognized_letter) != -1:

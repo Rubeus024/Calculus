@@ -12,6 +12,7 @@ class Polynomal:
         self._coeff_der_list = []
         self._power_der_list = []
         self.create_coefficient()
+        self.derivative_num = 0
         self.derivative()
 
     def show(self):
@@ -58,18 +59,30 @@ class Polynomal:
             # print("PowerList", powerList)
 
             self._coeff_der_list = tuple(zip(self._coeff_list, self._power_list))
+
     def derivative(self):
 
-        self._coeff_der_list = [coeff * y for coeff, y in zip(self._coeff_list, self._power_list)]
-        self._coeff_der_list = [x for x in self._coeff_der_list if x != 0]
-        self._power_der_list = [x for x in self._power_list if x >0]
-        print('Potęgi pochodnej (lista) : ', self._power_der_list)
-        print('Współczynniki pochodnej: ', self._coeff_der_list)
-        deriv_string = ''
-        for i, element in enumerate(self._coeff_der_list):
-            self.derivative_str += str(element)+'x' if element<0 else '+'+str(element)+'x'
-            self.derivative_str += '^'+str(self._power_list[i]) if self._power_list[i] >1 else ''
+        self.derivative_str = ''
 
+        if self.derivative_num == 0:
+            self._coeff_der_list = [coeff * y for coeff, y in zip(self._coeff_list, self._power_list)]
+            self._coeff_der_list = [x for x in self._coeff_der_list if x != 0]
+            self._power_der_list = [x-1 for x in self._power_list if x > 0]
+            for i, element in enumerate(self._coeff_der_list):
+                self.derivative_str += str(element) if element < 0 else '+'+str(element)
+                self.derivative_str += 'x^'+str(self._power_der_list[i]) if self._power_der_list[i] >= 1 else ''
+        else:
+            self._coeff_der_list = [coeff * y for coeff, y in zip(self._coeff_der_list, self._power_der_list)]
+            self._coeff_der_list = [x for x in self._coeff_der_list if x != 0]
+            self._power_der_list = [x-1 for x in self._power_der_list if x > 0]
+            for i, element in enumerate(self._coeff_der_list):
+                self.derivative_str += str(element) if element < 0 else '+' + str(element)
+                self.derivative_str += 'x^' + str(self._power_der_list[i]) if self._power_der_list[i] >= 1 else ''
+
+        self.derivative_num += 1
+
+    def reset_derivative(self):
+        self.derivative_num=0;
 
     def integral_rectangle(self, start, stop, step=0.1):
         count = int((stop-start)/step)
@@ -89,8 +102,17 @@ class Polynomal:
 
 obj1 = Polynomal('x^3 - 4x^2 + 6x - 24 ')
 print(obj1.__dict__)
-print(obj1.integral_rectangle(0, 45, 0.01))
+#print(obj1.integral_rectangle(0, 45, 0.01))
 print(obj1._reg_expr)
 print(obj1.derivative_str)
 obj1.derivative()
 print(obj1.derivative_str)
+obj1.derivative()
+print(obj1.derivative_str)
+
+obj1.reset_derivative()
+obj1.derivative()
+print(obj1.derivative_str)
+
+
+
